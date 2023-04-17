@@ -1,15 +1,40 @@
+import * as Location from "expo-location";
+import { useEffect, useState } from "react";
 import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
 
 // Dimensions으로 해당 기기의 사이즈를 얻을 수 있다.
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
+  const [city, setCity] = useState("Loading...");
+  const [location, setLocation] = useState(null);
+  const [ok, setOk] = useState(true);
+
+  const ask = async () => {
+    const { granted } = await Location.requestForegroundPermissionsAsync();
+    if (!granted) {
+      setOk(false);
+    }
+    const {
+      coords: { latitude, longitude },
+    } = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    const location = await Location.reverseGeocodeAsync(
+      { latitude, longitude },
+      { useGoogleMaps: false }
+    );
+    setCity(location[0].city);
+  };
+
+  useEffect(() => {
+    ask();
+  });
+
   return (
     // View는 컨테이너 즉, div와 같은 것이다.
     // react native에 있는 모든 text는 text component에 들어가야 한다.
     <View style={styles.container}>
       <View style={styles.city}>
-        <Text style={styles.cityName}>Seoul</Text>
+        <Text style={styles.cityName}>{city}</Text>
       </View>
       {/* ScrollView에서 css를 하려면 style이 아닌 contentContainerStyle을 이용해야 css 작성을 할 수 있다. */}
       {/* ScrollView는 스크린보다 더 나아가야 하기 때문에 flex가 필요없다. */}
