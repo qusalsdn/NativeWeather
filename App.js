@@ -1,5 +1,7 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, ScrollView, StyleSheet, Text, View } from "react-native";
+
+// Dimensions으로 해당 기기의 사이즈를 얻을 수 있다.
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
   return (
@@ -9,12 +11,37 @@ export default function App() {
       <View style={styles.city}>
         <Text style={styles.cityName}>Seoul</Text>
       </View>
-      <View style={styles.weather}>
+      {/* ScrollView에서 css를 하려면 style이 아닌 contentContainerStyle을 이용해야 css 작성을 할 수 있다. */}
+      {/* ScrollView는 스크린보다 더 나아가야 하기 때문에 flex가 필요없다. */}
+      {/* horizontal: 수평, pagingEnabled: 스크롤을 자유롭게 하지 못하게 한다. 즉, 스크롤이 이어지지 않고 끊김 */}
+      {/* showsHorizontalScrollIndicator를 false로 설정하면 아래에 표시되는 scroll indicator를 숨겨준다. */}
+      <ScrollView
+        contentContainerStyle={styles.weather}
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+      >
         <View style={styles.day}>
           <Text style={styles.temp}>27</Text>
           <Text style={styles.description}>Sunny</Text>
         </View>
-      </View>
+        <View style={styles.day}>
+          <Text style={styles.temp}>27</Text>
+          <Text style={styles.description}>Sunny</Text>
+        </View>
+        <View style={styles.day}>
+          <Text style={styles.temp}>27</Text>
+          <Text style={styles.description}>Sunny</Text>
+        </View>
+        <View style={styles.day}>
+          <Text style={styles.temp}>27</Text>
+          <Text style={styles.description}>Sunny</Text>
+        </View>
+        <View style={styles.day}>
+          <Text style={styles.temp}>27</Text>
+          <Text style={styles.description}>Sunny</Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -33,11 +60,9 @@ const styles = StyleSheet.create({
     fontSize: 60,
     fontWeight: "bold",
   },
-  weather: {
-    flex: 3,
-  },
+  weather: {},
   day: {
-    flex: 1,
+    width: SCREEN_WIDTH,
     alignItems: "center",
   },
   temp: {
