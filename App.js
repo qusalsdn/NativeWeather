@@ -20,6 +20,7 @@ export default function App() {
   const [ok, setOk] = useState(true);
 
   const getWeather = async () => {
+    // requestForegroundPermissionsAsync 함수는 위도와 경도를 주소로 변환해준다.
     const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
       setOk(false);
@@ -27,6 +28,7 @@ export default function App() {
     const {
       coords: { latitude, longitude },
     } = await Location.getCurrentPositionAsync({ accuracy: 5 });
+    // reverseGeocodeAsync 함수는 주소를 위도, 경도 숫자로 변환해준다.
     const location = await Location.reverseGeocodeAsync(
       { latitude, longitude },
       { useGoogleMaps: false }
