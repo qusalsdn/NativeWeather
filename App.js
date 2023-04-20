@@ -8,11 +8,22 @@ import {
   Text,
   View,
 } from "react-native";
+import { Fontisto } from "@expo/vector-icons";
 
 // Dimensions으로 해당 기기의 사이즈를 얻을 수 있다.
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const API_KEY = "f9064ebc5176a5a80b8a0136c5a122a5";
+
+const icons = {
+  Clouds: "cloudy",
+  Clear: "day-sunny",
+  Atmosphere: "cloudy-gusts",
+  Snow: "snow",
+  Rain: "rains",
+  Drizzle: "rain",
+  Thunderstorm: "lightning",
+};
 
 export default function App() {
   const [city, setCity] = useState("Loading...");
@@ -64,7 +75,7 @@ export default function App() {
         showsHorizontalScrollIndicator={false}
       >
         {days.length === 0 ? (
-          <View style={styles.day}>
+          <View style={{ ...styles.day, alignItems: "center" }}>
             <ActivityIndicator size="large" style={{ marginTop: 10 }} />
           </View>
         ) : (
@@ -74,7 +85,17 @@ export default function App() {
               <View key={index} style={styles.day}>
                 <Text style={styles.date}>{time[0]}</Text>
                 <Text style={styles.time}>{time[1]}</Text>
-                <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <Text style={styles.temp}>{parseFloat(day.main.temp).toFixed(1)}</Text>
+                  <Fontisto name={icons[day.weather[0].main]} size={68} color="white" />
+                </View>
                 <Text style={styles.description}>{day.weather[0].main}</Text>
                 <Text style={styles.tinyText}>{day.weather[0].description}</Text>
               </View>
@@ -90,6 +111,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#437299",
   },
   city: {
     flex: 1,
@@ -99,28 +121,38 @@ const styles = StyleSheet.create({
   cityName: {
     fontSize: 60,
     fontWeight: "bold",
+    color: "white",
   },
   weather: {},
   day: {
     width: SCREEN_WIDTH,
-    alignItems: "center",
+    alignItems: "flex-start",
+    paddingHorizontal: 20,
   },
   date: {
     marginTop: 50,
     fontSize: 20,
+    color: "white",
   },
   time: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "white",
   },
   temp: {
-    fontSize: 170,
+    fontSize: 100,
+    color: "white",
   },
   description: {
     marginTop: -10,
-    fontSize: 60,
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "white",
   },
   tinyText: {
-    fontSize: 20,
+    marginTop: -5,
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "white",
   },
 });
